@@ -32,7 +32,7 @@ nl:
       mappings:
         create_account: Account aanmaken
         csv_mapping_label: "%{mapping} in CSV"
-        sure_mapping_label: "%{mapping} in %{product_name}"
+        app_mapping_label: "%{mapping} in %{product_name}"
         no_accounts: U heeft nog geen accounts. Maak een account aan dat we kunnen gebruiken voor (niet-toegewezen) rijen in uw CSV of ga terug naar de Opschoon stap en geef een accountnaam op die we kunnen gebruiken.
         rows_label: Rijen
         unassigned_account: Moet u een nieuw account aanmaken voor niet-toegewezen rijen?

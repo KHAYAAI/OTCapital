@@ -39,7 +39,7 @@ ca:
           per a les files (sense assignar) del teu CSV o torna al pas de Neteja i
           proporciona un nom de compte que puguem utilitzar.
         rows_label: Files
-        sure_mapping_label: "%{mapping} a %{product_name}"
+        app_mapping_label: "%{mapping} a %{product_name}"
         unassigned_account: Necessites crear un nou compte per a les files sense assignar?
       show:
         account_mapping_description: Assigna tots els comptes del teu fitxer importat

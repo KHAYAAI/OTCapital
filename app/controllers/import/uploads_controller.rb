@@ -47,7 +47,7 @@ class Import::UploadsController < ApplicationController
     def update_otcapital_import_upload
       uploaded = upload_params[:ndjson_file]
       unless uploaded.present?
-        flash.now[:alert] = t("import.uploads.sure_import.ndjson_invalid", default: "Must be valid NDJSON with at least one record")
+        flash.now[:alert] = t("import.uploads.otcapital_import.ndjson_invalid", default: "Must be valid NDJSON with at least one record")
         render :show, status: :unprocessable_entity
         return
       end
@@ -67,7 +67,7 @@ class Import::UploadsController < ApplicationController
         @import.sync_ndjson_rows_count!
         redirect_to import_path(@import), notice: t("imports.create.ndjson_uploaded")
       else
-        flash.now[:alert] = t("import.uploads.sure_import.ndjson_invalid", default: "Must be valid NDJSON with at least one record")
+        flash.now[:alert] = t("import.uploads.otcapital_import.ndjson_invalid", default: "Must be valid NDJSON with at least one record")
 
         render :show, status: :unprocessable_entity
       end

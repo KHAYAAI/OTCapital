@@ -21,7 +21,7 @@ ro:
       mappings:
         create_account: Creează cont
         csv_mapping_label: "%{mapping} în CSV"
-        sure_mapping_label: "%{mapping} în %{product_name}"
+        app_mapping_label: "%{mapping} în %{product_name}"
         no_accounts: Nu ai încă niciun cont. Te rugăm să creezi un cont pe care să-l putem folosi pentru rândurile (neasignate) din CSV-ul tău sau să te întorci la pasul de Curățare și să furnizezi un nume de cont pe care să-l putem folosi.
         rows_label: Rânduri
         unassigned_account: Trebuie să creezi un cont nou pentru rândurile neasignate?

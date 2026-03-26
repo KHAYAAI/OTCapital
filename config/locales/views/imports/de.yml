@@ -56,7 +56,7 @@ de:
       mappings:
         create_account: Konto erstellen
         csv_mapping_label: "%{mapping} in CSV"
-        sure_mapping_label: "%{mapping} in %{product_name}"
+        app_mapping_label: "%{mapping} in %{product_name}"
         no_accounts: Du hast noch keine Konten. Bitte erstelle ein Konto, das wir für nicht zugewiesene Zeilen in deiner CSV verwenden können, oder gehe zurück zum Bereinigungsschritt und gib dort einen Kontonamen an.
         rows_label: Zeilen
         unassigned_account: Neues Konto für nicht zugewiesene Zeilen erstellen?

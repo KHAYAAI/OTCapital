@@ -28,7 +28,7 @@ pt-BR:
       mappings:
         create_account: Criar conta
         csv_mapping_label: "%{mapping} no CSV"
-        sure_mapping_label: "%{mapping} no %{product_name}"
+        app_mapping_label: "%{mapping} no %{product_name}"
         no_accounts: Você ainda não tem contas. Crie uma conta que possamos usar para 
           linhas (não atribuídas) no seu CSV ou volte para a etapa de Limpeza e forneça
           um nome de conta que possamos usar.

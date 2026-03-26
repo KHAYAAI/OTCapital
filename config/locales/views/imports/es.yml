@@ -56,7 +56,7 @@ es:
       mappings:
         create_account: Crear cuenta
         csv_mapping_label: "%{mapping} en CSV"
-        sure_mapping_label: "%{mapping} en %{product_name}"
+        app_mapping_label: "%{mapping} en %{product_name}"
         no_accounts: Aún no tienes cuentas. Por favor, crea una cuenta que podamos usar para las filas (sin asignar) en tu CSV o vuelve al paso de Limpieza y proporciona un nombre de cuenta que podamos usar.
         rows_label: Filas
         unassigned_account: ¿Necesitas crear una nueva cuenta para las filas sin asignar?

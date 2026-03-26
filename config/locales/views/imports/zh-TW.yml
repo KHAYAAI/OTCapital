@@ -29,7 +29,7 @@ zh-TW:
       mappings:
         create_account: 建立帳戶
         csv_mapping_label: "CSV 中的 %{mapping}"
-        sure_mapping_label: "%{product_name} 中的 %{mapping}"
+        app_mapping_label: "%{product_name} 中的 %{mapping}"
         no_accounts: 您尚未建立任何帳戶。請建立一個帳戶以便分配 CSV 中（未指定）的資料列，或返回「校正」步驟並提供可使用的帳戶名稱。
         rows_label: 資料列
         unassigned_account: 需要為未分配的資料列建立新帳戶嗎？

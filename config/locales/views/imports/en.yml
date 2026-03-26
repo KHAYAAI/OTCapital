@@ -4,7 +4,7 @@ en:
     qif_category_selections:
       show:
         title: "Select categories & tags"
-        description: "Choose which categories and tags from your QIF file to bring into Sure. Deselected items will be removed from those transactions."
+        description: "Choose which categories and tags from your QIF file to bring into OTCapital. Deselected items will be removed from those transactions."
         categories_heading: Categories
         categories_found:
           one: "1 category found"
@@ -57,7 +57,7 @@ en:
         date_format_label: Date format
         rows_to_skip_label: Skip first n rows
     confirms:
-      sure_import:
+      otcapital_import:
         title: Confirm your import
         description: Review the data that will be imported from your export file.
         summary: Import summary
@@ -67,7 +67,7 @@ en:
       mappings:
         create_account: Create account
         csv_mapping_label: "%{mapping} in CSV"
-        sure_mapping_label: "%{mapping} in %{product_name}"
+        app_mapping_label: "%{mapping} in %{product_name}"
         no_accounts: You don't have any accounts yet. Please create an account that
           we can use for (unassigned) rows in your CSV or go back to the Clean step
           and provide an account name we can use.
@@ -108,7 +108,7 @@ en:
         instructions_4: Columns marked with an asterisk (*) are required data.
         instructions_5: No commas, no currency symbols, and no parentheses in numbers.
         title: Import your data
-      sure_import:
+      otcapital_import:
         title: Import from export
         description: Upload the all.ndjson file from your data export to restore your accounts, transactions, categories, and more.
         drop_title: Drop NDJSON to upload
@@ -129,7 +129,7 @@ en:
       rule_import: "Rule import"
       pdf_import: "PDF import"
       document_import: "Document import"
-      sure_import: "Sure import"
+      otcapital_import: "OTCapital import"
     steps:
       upload: Upload
       configure: Configure
@@ -158,7 +158,7 @@ en:
           rule_import: "Rule"
           pdf_import: "PDF"
           document_import: "Document"
-          sure_import: "Sure"
+          otcapital_import: "OTCapital"
         status:
           in_progress: In progress
           uploading: Processing rows
@@ -185,8 +185,8 @@ en:
       import_rules: Import rules
       import_transactions: Import transactions
       import_qif: Import from Quicken (QIF)
-      import_sure: Import from Sure
-      import_sure_description: Full-export .ndjson file
+      import_otcapital: Import from OTCapital
+      import_otcapital_description: Full-export .ndjson file
       import_file: Import document
       import_file_description: AI-powered analysis for PDFs and searchable file upload
       requires_account: Import accounts first to unlock this option.

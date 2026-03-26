@@ -7,12 +7,12 @@
 <% if @import.is_a?(OTCapitalImport) %>
   <div class="space-y-4" data-controller="drag-and-drop-import">
     <!-- Overlay -->
-    <%= render "imports/drag_drop_overlay", title: t("import.uploads.sure_import.drop_title"), subtitle: t("import.uploads.sure_import.drop_subtitle") %>
+    <%= render "imports/drag_drop_overlay", title: t("import.uploads.otcapital_import.drop_title"), subtitle: t("import.uploads.otcapital_import.drop_subtitle") %>
 
     <div class="space-y-4 mx-auto max-w-md">
       <div class="text-center space-y-2">
-        <h1 class="text-3xl text-primary font-medium"><%= t("import.uploads.sure_import.title") %></h1>
-        <p class="text-secondary text-sm"><%= t("import.uploads.sure_import.description") %></p>
+        <h1 class="text-3xl text-primary font-medium"><%= t("import.uploads.otcapital_import.title") %></h1>
+        <p class="text-secondary text-sm"><%= t("import.uploads.otcapital_import.description") %></p>
       </div>
 
       <%= styled_form_with model: @import, scope: :import, url: import_upload_path(@import), multipart: true, class: "space-y-2", data: { drag_and_drop_import_target: "form" } do |form| %>
@@ -21,7 +21,7 @@
             <div data-file-upload-target="uploadText" class="flex flex-col items-center">
               <%= icon("database", size: "lg", class: "mb-4 mx-auto") %>
               <p class="mb-2 text-md text-gray text-center">
-                <span class="font-medium text-primary"><%= t("import.uploads.sure_import.browse") %></span> <%= t("import.uploads.sure_import.browse_hint") %>
+                <span class="font-medium text-primary"><%= t("import.uploads.otcapital_import.browse") %></span> <%= t("import.uploads.otcapital_import.browse_hint") %>
               </p>
             </div>
 
@@ -36,13 +36,13 @@
           </div>
         </div>
 
-        <%= form.submit t("import.uploads.sure_import.upload_button"), disabled: @import.complete? %>
+        <%= form.submit t("import.uploads.otcapital_import.upload_button"), disabled: @import.complete? %>
       <% end %>
     </div>
 
     <div class="flex justify-center">
       <span class="text-secondary text-sm">
-        <%= t("import.uploads.sure_import.hint_html") %>
+        <%= t("import.uploads.otcapital_import.hint_html") %>
       </span>
     </div>
   </div>

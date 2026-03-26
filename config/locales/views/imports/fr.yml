@@ -4,7 +4,7 @@ fr:
     qif_category_selections:
       show:
         title: "Sélectionner les catégories et étiquettes"
-        description: "Choisissez les catégories et étiquettes de votre fichier QIF à importer dans Sure. Les éléments désélectionnés seront retirés des transactions correspondantes."
+        description: "Choisissez les catégories et étiquettes de votre fichier QIF à importer dans OTCapital. Les éléments désélectionnés seront retirés des transactions correspondantes."
         categories_heading: Catégories
         categories_found:
           one: "1 catégorie trouvée"
@@ -53,7 +53,7 @@ fr:
         date_format_label: Format de date
         rows_to_skip_label: Ignorer les n premières lignes
     confirms:
-      sure_import:
+      otcapital_import:
         title: Confirmer votre importation
         description: Vérifiez les données qui seront importées depuis votre fichier d'export.
         summary: Résumé de l'importation
@@ -63,7 +63,7 @@ fr:
       mappings:
         create_account: Créer un compte
         csv_mapping_label: "%{mapping} dans le CSV"
-        sure_mapping_label: "%{mapping} dans %{product_name}"
+        app_mapping_label: "%{mapping} dans %{product_name}"
         no_accounts: Vous n'avez pas encore de comptes. Veuillez créer un compte que nous pouvons utiliser pour les lignes non affectées de votre CSV ou retournez à l'étape Nettoyer et fournissez un nom de compte que nous pouvons utiliser.
         rows_label: Lignes
         unassigned_account: Avez-vous besoin de créer un nouveau compte pour les lignes non affectées ?
@@ -94,7 +94,7 @@ fr:
         instructions_4: Les colonnes marquées avec une étoile (*) sont des données requises.
         instructions_5: Pas de virgules, pas de symboles monétaires et pas de parenthèses dans les nombres.
         title: Importez vos données
-      sure_import:
+      otcapital_import:
         title: Importer depuis l'export
         description: Téléversez le fichier all.ndjson de votre export de données pour restaurer vos comptes, transactions, catégories et plus encore.
         drop_title: Déposez le NDJSON pour téléverser

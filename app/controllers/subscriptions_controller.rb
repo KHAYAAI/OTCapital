@@ -33,7 +33,7 @@ class SubscriptionsController < ApplicationController
   def create
     if Current.family.can_start_trial?
       Current.family.start_trial_subscription!
-      redirect_to root_path, notice: "Welcome to Sure!"
+      redirect_to root_path, notice: "Welcome to OTCapital!"
     else
       redirect_to root_path, alert: "You have already started or completed a trial. Please upgrade to continue."
     end
@@ -54,7 +54,7 @@ class SubscriptionsController < ApplicationController
 
     if checkout_result.success?
       Current.family.start_subscription!(checkout_result.subscription_id)
-      redirect_to root_path, notice: "Welcome to Sure!  Your contribution is appreciated."
+      redirect_to root_path, notice: "Welcome to OTCapital!  Your contribution is appreciated."
     else
       redirect_to root_path, alert: "Something went wrong processing your contribution. Please try again."
     end
