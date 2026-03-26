@@ -1,11 +1,11 @@
 require "test_helper"
 
-class SureImportTest < ActiveSupport::TestCase
+class OTCapitalImportTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   setup do
     @family = families(:dylan_family)
-    @import = @family.imports.create!(type: "SureImport")
+    @import = @family.imports.create!(type: "OTCapitalImport")
   end
 
   test "dry_run reflects attached ndjson content" do

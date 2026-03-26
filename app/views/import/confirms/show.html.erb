@@ -2,9 +2,9 @@
   <%= render "imports/nav", import: @import %>
 <% end %>
 
-<%= content_for :previous_path, @import.is_a?(SureImport) ? imports_path : import_clean_path(@import) %>
+<%= content_for :previous_path, @import.is_a?(OTCapitalImport) ? imports_path : import_clean_path(@import) %>
 
-<% if @import.is_a?(SureImport) %>
+<% if @import.is_a?(OTCapitalImport) %>
   <div class="space-y-6 mx-auto max-w-md mb-6">
     <div class="text-center space-y-2">
       <h1 class="text-3xl text-primary font-medium"><%= t("import.confirms.sure_import.title") %></h1>

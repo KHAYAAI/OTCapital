@@ -48,5 +48,5 @@ pdf_with_rows:
 
 sure:
   family: dylan_family
-  type: SureImport
+  type: OTCapitalImport
   status: pending

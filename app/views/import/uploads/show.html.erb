@@ -4,7 +4,7 @@
 
 <%= content_for :previous_path, imports_path %>
 
-<% if @import.is_a?(SureImport) %>
+<% if @import.is_a?(OTCapitalImport) %>
   <div class="space-y-4" data-controller="drag-and-drop-import">
     <!-- Overlay -->
     <%= render "imports/drag_drop_overlay", title: t("import.uploads.sure_import.drop_title"), subtitle: t("import.uploads.sure_import.drop_subtitle") %>

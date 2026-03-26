@@ -1,4 +1,4 @@
-module Sure
+module OTCapital
   class << self
     def version
       Semver.new(semver)

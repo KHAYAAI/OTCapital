@@ -16,8 +16,8 @@ class Import::UploadsController < ApplicationController
   def update
     if @import.is_a?(QifImport)
       handle_qif_upload
-    elsif @import.is_a?(SureImport)
-      update_sure_import_upload
+    elsif @import.is_a?(OTCapitalImport)
+      update_otcapital_import_upload
     elsif csv_valid?(csv_str)
       @import.account = Current.family.accounts.find_by(id: import_account_id)
       @import.assign_attributes(raw_file_str: csv_str, col_sep: upload_params[:col_sep])
@@ -44,7 +44,7 @@ class Import::UploadsController < ApplicationController
       end
     end
 
-    def update_sure_import_upload
+    def update_otcapital_import_upload
       uploaded = upload_params[:ndjson_file]
       unless uploaded.present?
         flash.now[:alert] = t("import.uploads.sure_import.ndjson_invalid", default: "Must be valid NDJSON with at least one record")
@@ -52,8 +52,8 @@ class Import::UploadsController < ApplicationController
         return
       end
 
-      if uploaded.size > SureImport::MAX_NDJSON_SIZE
-        flash.now[:alert] = t("imports.create.file_too_large", max_size: SureImport::MAX_NDJSON_SIZE / 1.megabyte)
+      if uploaded.size > OTCapitalImport::MAX_NDJSON_SIZE
+        flash.now[:alert] = t("imports.create.file_too_large", max_size: OTCapitalImport::MAX_NDJSON_SIZE / 1.megabyte)
         render :show, status: :unprocessable_entity
         return
       end

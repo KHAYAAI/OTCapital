@@ -46,16 +46,16 @@ ca:
       reduce_stress: Reduir l'estrès financer o l'ansietat
       submit: Següent
     trial:
-      title: Prova Sure durant 45 dies
+      title: Prova OTCapital durant 45 dies
       data_deletion: Les dades s'eliminaran després
       description_html: A partir d'avui pots provar el producte a fons.<br/>Si t'agrada, allotja'l tu mateix o contribueix per continuar usant-lo aquí.
-      try_button: Provar Sure durant 45 dies
+      try_button: Provar OTCapital durant 45 dies
       continue_trial: Continuar la prova
       upgrade: Actualitzar
       how_it_works: Com funciona
       today: Avui
-      today_description: Tindràs accés gratuït a Sure durant 45 dies al nostre AWS.
+      today_description: Tindràs accés gratuït a OTCapital durant 45 dies al nostre AWS.
       in_40_days: En 40 dies (%{date})
       in_40_days_description: Et notificarem per recordar-te d'exportar les teves dades.
       in_45_days: En 45 dies (%{date})
-      in_45_days_description: Eliminarem les teves dades — contribueix per continuar usant Sure aquí!
+      in_45_days_description: Eliminarem les teves dades — contribueix per continuar usant OTCapital aquí!

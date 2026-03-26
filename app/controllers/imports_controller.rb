@@ -49,8 +49,8 @@ class ImportsController < ApplicationController
       return
     end
 
-    if file.present? && sure_import_request?
-      create_sure_import(file)
+    if file.present? && otcapital_import_request?
+      create_otcapital_import(file)
       return
     end
 
@@ -206,13 +206,13 @@ class ImportsController < ApplicationController
       params.dig(:import, :type) == "DocumentImport"
     end
 
-    def sure_import_request?
-      params.dig(:import, :type) == "SureImport"
+    def otcapital_import_request?
+      params.dig(:import, :type) == "OTCapitalImport"
     end
 
-    def create_sure_import(file)
-      if file.size > SureImport::MAX_NDJSON_SIZE
-        redirect_to new_import_path, alert: t("imports.create.file_too_large", max_size: SureImport::MAX_NDJSON_SIZE / 1.megabyte)
+    def create_otcapital_import(file)
+      if file.size > OTCapitalImport::MAX_NDJSON_SIZE
+        redirect_to new_import_path, alert: t("imports.create.file_too_large", max_size: OTCapitalImport::MAX_NDJSON_SIZE / 1.megabyte)
         return
       end
 
@@ -224,12 +224,12 @@ class ImportsController < ApplicationController
 
       content = file.read
       file.rewind
-      unless SureImport.valid_ndjson_first_line?(content)
+      unless OTCapitalImport.valid_ndjson_first_line?(content)
         redirect_to new_import_path, alert: t("imports.create.invalid_ndjson_file_type")
         return
       end
 
-      import = Current.family.imports.create!(type: "SureImport")
+      import = Current.family.imports.create!(type: "OTCapitalImport")
       import.ndjson_file.attach(
         io: StringIO.new(content),
         filename: file.original_filename,

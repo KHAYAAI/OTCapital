@@ -1,4 +1,4 @@
-class SureImport < Import
+class OTCapitalImport < Import
   MAX_NDJSON_SIZE = 10.megabytes
   ALLOWED_NDJSON_CONTENT_TYPES = %w[
     application/x-ndjson

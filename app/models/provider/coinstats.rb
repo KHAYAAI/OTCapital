@@ -9,7 +9,7 @@ class Provider::Coinstats < Provider
 
   BASE_URL = "https://openapiv1.coinstats.app"
 
-  headers "User-Agent" => "Sure Finance CoinStats Client (https://github.com/we-promise/sure)"
+  headers "User-Agent" => "OTCapital CoinStats Client (https://github.com/khayaai/otcapital)"
   default_options.merge!({ timeout: 120 }.merge(httparty_ssl_options))
 
   attr_reader :api_key

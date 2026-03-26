@@ -42,6 +42,10 @@
 class StitchItem < ApplicationRecord
   include Syncable, Provided, Unlinking
 
+  # Encrypt sensitive OAuth fields at rest using Rails Active Record Encryption.
+  # Keys are derived from SECRET_KEY_BASE via config/initializers/active_record_encryption.rb.
+  encrypts :user_interaction_id, :token_id
+
   # "good" = connected and working
   # "requires_update" = consent expired or revoked; user must re-authorise
   enum :status, { good: "good", requires_update: "requires_update" }, default: :good
