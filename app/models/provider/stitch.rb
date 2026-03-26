@@ -1,15 +1,62 @@
-# Provider::Stitch wraps the Stitch Money open-banking API for South Africa.
+# =============================================================================
+# Provider::Stitch — South African Open Banking API Client
+# =============================================================================
 #
-# Stitch uses OAuth 2.0 + GraphQL.
-# Docs: https://stitch.money/docs
+# WHAT IS STITCH?
+# ---------------
+# Stitch Money (https://stitch.money) is South Africa's leading open-banking
+# aggregator. It provides OAuth-authenticated access to bank accounts at FNB,
+# Standard Bank, ABSA, Nedbank, Capitec, Discovery Bank, Investec, TymeBank
+# and others — covering the majority of SA retail banking.
 #
-# Flow:
-# 1. Exchange client_id + client_secret for an app-level access token
-# 2. Generate a link token (user consent URL) via GraphQL mutation
-# 3. User authorises their bank in Stitch's hosted UI
-# 4. Stitch redirects back with a user_interaction_id
-# 5. Exchange user_interaction_id for a user token
-# 6. Query accounts and transactions via GraphQL using the user token
+# CREDENTIAL SETUP (dev/production)
+# -----------------------------------
+# Obtain credentials at https://stitch.money/docs/get-started
+# Then set in your environment OR Rails credentials file:
+#
+#   ENV vars (recommended for Docker/Heroku/Render):
+#     STITCH_CLIENT_ID=your_client_id
+#     STITCH_CLIENT_SECRET=your_client_secret
+#
+#   Rails credentials (rails credentials:edit):
+#     stitch:
+#       client_id: your_client_id
+#       client_secret: your_client_secret
+#
+# The controller (StitchItemsController#build_stitch_provider) prefers ENV
+# vars but falls back to credentials automatically.
+#
+# OAUTH FLOW (5 steps)
+# --------------------
+# Step 1 → [app-level]  POST /connect/token (client_credentials grant)
+#           Returns: app_token (used only to create link tokens)
+#
+# Step 2 → [app-level]  GraphQL mutation: clientInitiateUserLinkToken
+#           Returns: link_url (redirect the user here), nonce
+#           The link_url opens Stitch's hosted consent UI in the user's browser.
+#
+# Step 3 → [user action] User logs in to their bank inside Stitch's UI and
+#           approves the connection. Stitch redirects to our callback URL
+#           (/stitch_items/callback) with a `user_interaction_id` param.
+#
+# Step 4 → [app-level]  POST /connect/token (authorization_code grant)
+#           Exchange user_interaction_id → user_token (scoped to that user's bank)
+#
+# Step 5 → [user-level] GraphQL queries with user_token: get_accounts,
+#           get_transactions
+#
+# IMPORTANT: user_interaction_id is SINGLE-USE. Store it in stitch_items
+# immediately on callback and exchange it for a user_token before it expires.
+# User tokens have a longer lifetime and should be refreshed as needed.
+#
+# ARCHITECTURE NOTE
+# -----------------
+# This class is a pure HTTP client — no Rails models, no side-effects.
+# It is instantiated by StitchItem::Provided#stitch_provider and by
+# StitchItemsController#build_stitch_provider.
+# The adapter (Provider::StitchAdapter) wires this into the Provider::Factory
+# registry so the existing sync infrastructure works without modification.
+#
 class Provider::Stitch
   include HTTParty
 
@@ -17,7 +64,15 @@ class Provider::Stitch
   TOKEN_URL   = "#{BASE_URL}/connect/token".freeze
   GRAPHQL_URL = "#{BASE_URL}/graphql".freeze
 
-  # Stitch error that carries an HTTP status symbol
+  # StitchError is raised for all non-2xx responses and GraphQL error arrays.
+  # `reason` is a symbol you can pattern-match on in rescue clauses:
+  #   :unauthorized   → credentials wrong / token expired — re-authorise
+  #   :forbidden      → scope not granted — check Stitch dashboard permissions
+  #   :unprocessable  → bad request body — check your GraphQL variables
+  #   :graphql_error  → Stitch returned data but with errors[] array
+  #   :api_error      → catch-all for unexpected status codes
+  #   :auth_failed    → token endpoint returned no access_token
+  #   :link_token_failed → link token mutation returned no result
   class StitchError < StandardError
     attr_reader :reason
     def initialize(msg, reason = :unknown)

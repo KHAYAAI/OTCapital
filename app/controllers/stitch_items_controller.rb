@@ -1,11 +1,52 @@
-# Handles the Stitch open-banking OAuth flow for South African bank connections.
+# =============================================================================
+# StitchItemsController — Manages the Stitch SA open-banking OAuth flow
+# =============================================================================
 #
-# Flow:
-# 1. GET  /stitch_items/new        — user clicks "Connect SA bank"
-# 2. POST /stitch_items            — create StitchItem, redirect to Stitch hosted UI
-# 3. GET  /stitch_items/callback   — Stitch redirects back with user_interaction_id
-# 4. GET  /stitch_items/:id/setup_accounts  — user selects which accounts to link
-# 5. POST /stitch_items/:id/complete_account_setup — link accounts
+# FULL USER JOURNEY (happy path)
+# --------------------------------
+# 1. GET  /stitch_items/new
+#    User opens "Connect a bank account" modal from Settings → Providers.
+#    They enter an optional friendly name (e.g. "My FNB").
+#
+# 2. POST /stitch_items (create)
+#    - Saves a new StitchItem with status=good, no token yet.
+#    - Calls Provider::Stitch#create_link_token to get a Stitch-hosted URL.
+#    - Redirects the user to that URL (Stitch's consent UI, external).
+#    - The StitchItem.id is passed as `state` so we can find it on callback.
+#
+# 3. GET /stitch_items/callback
+#    Stitch redirects back here with:
+#      ?id=<user_interaction_id>&state=<stitch_item.id>
+#    - Finds the pending StitchItem by state param.
+#    - Stores the user_interaction_id on the StitchItem.
+#    - Redirects to setup_accounts.
+#    NOTE: CSRF verification is skipped for this action — Stitch is the
+#    initiator of this GET, not a form submission from our app.
+#
+# 4. GET /stitch_items/:id/setup_accounts
+#    - Exchanges user_interaction_id → user_token via Stitch API.
+#    - Fetches the list of bank accounts available under this connection.
+#    - Renders a checklist for the user to select which accounts to link.
+#
+# 5. POST /stitch_items/:id/complete_account_setup
+#    - For each selected account:
+#        • If new: creates an OTCapital Account record (ZAR, correct type)
+#        • Creates/updates the StitchAccount join record
+#        • Calls upsert_stitch_snapshot! to store the latest metadata
+#    - Redirects to Settings → Providers with a success notice.
+#
+# ERROR HANDLING
+# --------------
+# Provider::Stitch::StitchError is caught at each step. On error we redirect
+# to settings_providers_path with an alert rather than showing a broken page.
+# The error reason symbol (e.reason) can be used for more granular handling
+# if needed (e.g. re-prompting auth on :unauthorized).
+#
+# ENVIRONMENT / CREDENTIALS REQUIRED
+# ------------------------------------
+#   STITCH_CLIENT_ID     (ENV or credentials: stitch.client_id)
+#   STITCH_CLIENT_SECRET (ENV or credentials: stitch.client_secret)
+#
 class StitchItemsController < ApplicationController
   before_action :set_stitch_item, only: %i[update destroy sync setup_accounts complete_account_setup]
   skip_before_action :verify_authenticity_token, only: [:callback]
