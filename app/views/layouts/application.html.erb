@@ -90,7 +90,7 @@ end %>
           <%= render DS::Link.new(
             variant: "icon",
             icon: "message-circle-question",
-            href: "https://discord.gg/36ZGBsxYEK",
+            href: ENV.fetch("SUPPORT_URL", "https://discord.gg/36ZGBsxYEK"),
             target: "_blank"
           ) %>
 

@@ -2,7 +2,7 @@ class Provider::Lunchflow
   include HTTParty
   extend SslConfigurable
 
-  headers "User-Agent" => "Sure Finance Lunch Flow Client"
+  headers "User-Agent" => "OTCapital LunchFlow Client"
   default_options.merge!({ timeout: 120 }.merge(httparty_ssl_options))
 
   attr_reader :api_key, :base_url

@@ -3,7 +3,7 @@
 class Provider::IndexaCapital
   include HTTParty
 
-  headers "User-Agent" => "Sure Finance IndexaCapital Client"
+  headers "User-Agent" => "OTCapital IndexaCapital Client"
   default_options.merge!(verify: true, ssl_verify_mode: OpenSSL::SSL::VERIFY_PEER, timeout: 120)
 
   class Error < StandardError

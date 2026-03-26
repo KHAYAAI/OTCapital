@@ -7,7 +7,7 @@ class Provider::Simplefin
   include HTTParty
   extend SslConfigurable
 
-  headers "User-Agent" => "Sure Finance SimpleFin Client"
+  headers "User-Agent" => "OTCapital SimpleFin Client"
   default_options.merge!({ timeout: 120 }.merge(httparty_ssl_options))
 
   # Retry configuration for transient network failures

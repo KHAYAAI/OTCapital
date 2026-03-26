@@ -80,6 +80,20 @@ Rails.application.routes.draw do
     end
   end
 
+  # Stitch open-banking routes (South Africa)
+  resources :stitch_items, only: [ :new, :create, :update, :destroy ] do
+    collection do
+      get  :callback
+      get  :select_existing_account
+      post :link_existing_account
+    end
+    member do
+      post :sync
+      get  :setup_accounts
+      post :complete_account_setup
+    end
+  end
+
   resources :enable_banking_items, only: [ :new, :create, :update, :destroy ] do
     collection do
       get :callback

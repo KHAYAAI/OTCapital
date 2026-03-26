@@ -1,0 +1,40 @@
+<%= turbo_frame_tag :modal do %>
+  <div class="p-6 space-y-4">
+    <h2 class="text-lg font-semibold text-primary"><%= t(".title") %></h2>
+    <p class="text-secondary text-sm"><%= t(".description") %></p>
+
+    <%= styled_form_with url: complete_account_setup_stitch_item_path(@stitch_item), method: :post, class: "space-y-4" do |form| %>
+      <div class="space-y-2">
+        <% if @accounts.present? %>
+          <% @accounts.each do |account| %>
+            <label class="flex items-center gap-3 bg-container-inset rounded-lg px-4 py-3 cursor-pointer hover:bg-container-inset-hover">
+              <%= check_box_tag "account_ids[]",
+                  account["id"],
+                  @existing_stitch_account_ids.include?(account["id"]),
+                  id: "account_#{account['id']}" %>
+              <div class="flex-1">
+                <p class="text-sm font-medium text-primary"><%= account["name"] || account["accountType"]&.titleize %></p>
+                <p class="text-xs text-secondary">
+                  <%= account["bankName"] %> &middot;
+                  <%= account["accountType"]&.titleize %> &middot;
+                  <% if account["currentBalance"] %>
+                    <%= number_to_currency(account["currentBalance"], unit: account["currency"] == "ZAR" ? "R" : account["currency"], delimiter: " ") %>
+                  <% end %>
+                </p>
+              </div>
+            </label>
+          <% end %>
+        <% else %>
+          <div class="text-center py-8 text-secondary text-sm">
+            <%= t(".no_accounts_found") %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <%= render DS::Button.new(text: t("cancel"), variant: "ghost", href: settings_providers_path) %>
+        <%= render DS::Button.new(text: t(".link_btn"), type: "submit") %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

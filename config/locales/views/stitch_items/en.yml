@@ -1,0 +1,31 @@
+en:
+  stitch_items:
+    create:
+      stitch_link_failed: "Failed to generate Stitch link. Please check your credentials and try again."
+    callback:
+      item_not_found: "Stitch connection not found."
+      authorization_failed: "Bank authorisation failed or was cancelled."
+    setup_accounts:
+      title: "Select accounts to link"
+      description: "Choose which bank accounts you want to link to OTCapital."
+      no_accounts_found: "No accounts were found for this connection."
+      fetch_accounts_failed: "Failed to fetch accounts from your bank. Please try again."
+      link_btn: "Link selected accounts"
+    complete_account_setup:
+      success: "Bank accounts linked successfully."
+      link_failed: "Failed to link accounts. Please try again."
+    new:
+      title: "Connect a South African bank"
+      description: "You will be redirected to Stitch's secure hosted interface to authorise access to your bank account."
+      connection_name: "Connection name"
+      connection_name_placeholder: "e.g. My FNB Account"
+      supported_banks: "Supported banks"
+      connect_btn: "Authorise with bank"
+    update:
+      success: "Stitch connection updated."
+    destroy:
+      success: "Bank connection removed."
+    sync:
+      sync_queued: "Bank sync queued."
+    link_existing_account:
+      success: "Account linked."

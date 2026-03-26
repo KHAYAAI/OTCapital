@@ -2,9 +2,9 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.3"
 	},
-	"name": "sure",
+	"name": "otcapital",
 	"version": "1.0.0",
-	"description": "The personal finance app for everyone",
+	"description": "OTCapital — Your South African wealth management platform",
 	"scripts": {
 		"style:check": "biome check",
 		"style:fix": "biome check --write",

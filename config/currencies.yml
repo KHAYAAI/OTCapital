@@ -826,7 +826,7 @@ yer:
   default_precision: 2
 zar:
   name: South African Rand
-  priority: 100
+  priority: 1
   iso_code: ZAR
   iso_numeric: "710"
   html_code: "&#x0052;"

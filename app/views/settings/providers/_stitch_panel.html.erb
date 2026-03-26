@@ -1,0 +1,71 @@
+<%
+  stitch_items = local_assigns[:stitch_items] || Current.family.stitch_items.active.ordered
+  credentials_configured = ENV["STITCH_CLIENT_ID"].present? ||
+                            Rails.application.credentials.dig(:stitch, :client_id).present?
+%>
+
+<div class="space-y-4">
+  <div class="prose prose-sm text-secondary">
+    <p class="text-primary font-medium">Connect your South African bank account via Stitch Money</p>
+    <ol>
+      <li>Set your <strong>STITCH_CLIENT_ID</strong> and <strong>STITCH_CLIENT_SECRET</strong> environment variables (or add them to your credentials file).</li>
+      <li>Click <strong>Connect a bank account</strong> below — you will be redirected to Stitch's secure hosted UI where you can authorise access to your bank.</li>
+      <li>After authorisation, return here to select which accounts to link to OTCapital.</li>
+    </ol>
+    <p class="text-sm">
+      Supported banks: FNB, Standard Bank, ABSA, Nedbank, Capitec, Discovery Bank, Investec, TymeBank, and more.
+    </p>
+  </div>
+
+  <% unless credentials_configured %>
+    <div class="p-3 rounded-lg bg-warning/10 border border-warning/20 text-sm text-warning">
+      Stitch credentials are not configured. Set <code>STITCH_CLIENT_ID</code> and <code>STITCH_CLIENT_SECRET</code> to enable live bank connections.
+    </div>
+  <% end %>
+
+  <% if stitch_items.any? %>
+    <div class="space-y-2">
+      <% stitch_items.each do |item| %>
+        <div class="flex items-center justify-between bg-container-inset rounded-lg px-4 py-3">
+          <div class="flex items-center gap-3">
+            <div class="w-2 h-2 rounded-full <%= item.good? ? 'bg-success' : 'bg-warning' %>"></div>
+            <div>
+              <p class="text-sm font-medium text-primary"><%= item.display_name %></p>
+              <p class="text-xs text-secondary"><%= item.stitch_accounts.count %> account(s) linked</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <%= render DS::Button.new(
+              variant: "ghost",
+              icon: "refresh-cw",
+              size: "sm",
+              href: sync_stitch_item_path(item),
+              method: :post
+            ) %>
+            <%= render DS::Button.new(
+              variant: "icon",
+              icon: "x",
+              href: stitch_item_path(item),
+              method: :delete,
+              confirm: CustomConfirm.for_resource_deletion(item.display_name, high_severity: true)
+            ) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="flex items-center gap-2">
+      <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
+      <p class="text-sm text-secondary">No bank connections yet.</p>
+    </div>
+  <% end %>
+
+  <% if credentials_configured %>
+    <%= render DS::Button.new(
+      text: "Connect a bank account",
+      icon: "plus",
+      href: new_stitch_item_path,
+      data: { turbo_frame: :modal }
+    ) %>
+  <% end %>
+</div>

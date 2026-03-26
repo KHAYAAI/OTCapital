@@ -3,6 +3,9 @@ class Family < ApplicationRecord
   include PlaidConnectable, SimplefinConnectable, LunchflowConnectable, EnableBankingConnectable
   include CoinbaseConnectable, CoinstatsConnectable, SnaptradeConnectable, MercuryConnectable
   include IndexaCapitalConnectable
+  include StitchConnectable
+
+  MARKET_MODES = %w[sa global].freeze
 
   DATE_FORMATS = [
     [ "MM-DD-YYYY", "%m-%d-%Y" ],
@@ -49,6 +52,7 @@ class Family < ApplicationRecord
   validates :month_start_day, inclusion: { in: 1..28 }
   validates :moniker, inclusion: { in: MONIKERS }
   validates :assistant_type, inclusion: { in: ASSISTANT_TYPES }
+  validates :market_mode, inclusion: { in: MARKET_MODES }
 
 
   def moniker_label

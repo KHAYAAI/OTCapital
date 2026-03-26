@@ -1,0 +1,29 @@
+<%= turbo_frame_tag :modal do %>
+  <div class="p-6 space-y-4">
+    <h2 class="text-lg font-semibold text-primary"><%= t(".title") %></h2>
+    <p class="text-secondary text-sm"><%= t(".description") %></p>
+
+    <%= styled_form_with model: @stitch_item, url: stitch_items_path, class: "space-y-4" do |form| %>
+      <%= form.hidden_field :accountable_type, value: @accountable_type %>
+
+      <%= form.text_field :name,
+          label: t(".connection_name"),
+          placeholder: t(".connection_name_placeholder"),
+          value: "My SA Bank" %>
+
+      <div class="bg-container-inset rounded-xl p-4 space-y-2">
+        <p class="text-sm font-medium text-primary"><%= t(".supported_banks") %></p>
+        <div class="grid grid-cols-2 gap-1 text-sm text-secondary">
+          <% SA_BANKS.first(8).each do |bank| %>
+            <span>• <%= bank[:name] %></span>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <%= render DS::Button.new(text: t("cancel"), variant: "ghost", href: settings_providers_path) %>
+        <%= render DS::Button.new(text: t(".connect_btn"), type: "submit", icon: "external-link") %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

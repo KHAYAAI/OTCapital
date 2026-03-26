@@ -6,7 +6,7 @@ class Provider::EnableBanking
 
   BASE_URL = "https://api.enablebanking.com".freeze
 
-  headers "User-Agent" => "Sure Finance Enable Banking Client"
+  headers "User-Agent" => "OTCapital Enable Banking Client"
   default_options.merge!({ timeout: 120 }.merge(httparty_ssl_options))
 
   attr_reader :application_id, :private_key
