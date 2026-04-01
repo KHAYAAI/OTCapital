@@ -13,7 +13,7 @@ class IndexaCapitalAccount::Processor
     account = indexa_capital_account.current_account
     return unless account
 
-    Rails.logger.info "IndexaCapitalAccount::Processor - Processing account #{indexa_capital_account.id} -> Sure account #{account.id}"
+    Rails.logger.info "IndexaCapitalAccount::Processor - Processing account #{indexa_capital_account.id} -> OTCapital account #{account.id}"
 
     # Update account balance FIRST (before processing transactions/holdings/activities)
     update_account_balance(account)

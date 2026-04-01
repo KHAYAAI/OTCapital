@@ -164,7 +164,7 @@ class IndexaCapitalItemsController < ApplicationController
         next
       end
 
-      # Create Sure account and link
+      # Create OTCapital account and link
       link_indexa_capital_account(indexa_capital_account, accountable_type)
       created_count += 1
     rescue => e

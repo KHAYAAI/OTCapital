@@ -74,7 +74,7 @@ ca:
         confirm_reset_with_sample_data:
           body: Segur que vols restablir el teu compte i carregar dades d'exemple?
             Això eliminarà les teves dades existents i les substituirà per dades de
-            demostració perquè puguis explorar Sure amb seguretat.
+            demostració perquè puguis explorar OTCapital amb seguretat.
           title: Restablir el compte i carregar dades d'exemple?
         danger_zone_title: Zona perillosa
         delete_account: Elimina el compte

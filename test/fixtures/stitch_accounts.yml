@@ -1,0 +1,8 @@
+one:
+  stitch_item: one
+  remote_id: "stitch-acc-001"
+  bank_id: "fnb"
+  bank_name: "First National Bank (FNB)"
+  account_type: "cheque"
+  account_number_masked: "•••• 1234"
+  currency: "ZAR"

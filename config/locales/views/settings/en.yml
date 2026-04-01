@@ -73,7 +73,7 @@ en:
           body: Are you sure you want to reset your account? This will delete all your accounts, categories, merchants, tags, and other data. This action cannot be undone.
           title: Reset account?
         confirm_reset_with_sample_data:
-          body: Are you sure you want to reset your account and load sample data? This will delete your existing data and replace it with demo data so you can explore Sure safely.
+          body: Are you sure you want to reset your account and load sample data? This will delete your existing data and replace it with demo data so you can explore OTCapital safely.
           title: Reset account and load sample data?
         confirm_remove_invitation:
           body: Are you sure you want to remove the invitation for %{email}?

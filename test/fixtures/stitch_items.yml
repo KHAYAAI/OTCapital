@@ -1,0 +1,11 @@
+one:
+  family: dylan_family
+  name: "My FNB Accounts"
+  status: good
+  scheduled_for_deletion: false
+
+requires_update:
+  family: dylan_family
+  name: "Old Capitec Connection"
+  status: requires_update
+  scheduled_for_deletion: false

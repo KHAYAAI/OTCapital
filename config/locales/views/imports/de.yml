@@ -4,7 +4,7 @@ de:
     qif_category_selections:
       show:
         title: "Kategorien und Tags auswählen"
-        description: "Wähle aus, welche Kategorien und Tags aus deiner QIF-Datei in Sure übernommen werden sollen. Abgewählte Einträge werden aus den betreffenden Transaktionen entfernt."
+        description: "Wähle aus, welche Kategorien und Tags aus deiner QIF-Datei in OTCapital übernommen werden sollen. Abgewählte Einträge werden aus den betreffenden Transaktionen entfernt."
         categories_heading: Kategorien
         categories_found:
           one: "1 Kategorie gefunden"

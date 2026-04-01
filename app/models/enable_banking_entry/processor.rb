@@ -158,7 +158,7 @@ class EnableBankingEntry::Processor
 
     def amount
       # Enable Banking uses PSD2 Berlin Group convention: negative = debit (outflow), positive = credit (inflow)
-      # Sure uses the same convention: negative = expense, positive = income
+      # OTCapital uses the same convention: negative = expense, positive = income
       # Therefore, use the amount as-is from the API without inversion
       amount_value
     end

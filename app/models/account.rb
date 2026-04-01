@@ -116,7 +116,7 @@ class Account < ApplicationRecord
       balance = simplefin_account.current_balance || simplefin_account.available_balance || 0
 
       # SimpleFin returns negative balances for credit cards (liabilities)
-      # But Sure expects positive balances for liabilities
+      # But OTCapital expects positive balances for liabilities
       if account_type == "CreditCard" || account_type == "Loan"
         balance = balance.abs
       end
@@ -158,7 +158,7 @@ class Account < ApplicationRecord
       balance = enable_banking_account.current_balance || 0
 
       # Enable Banking may return negative balances for liabilities
-      # Sure expects positive balances for liabilities
+      # OTCapital expects positive balances for liabilities
       if account_type == "CreditCard" || account_type == "Loan"
         balance = balance.abs
       end

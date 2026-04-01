@@ -1,6 +1,6 @@
 ca:
   password_resets:
-    disabled: "El restabliment de la contrasenya a través de Sure està desactivat. Si us plau, restableix la teva contrasenya a través del teu proveïdor d'identitat."
+    disabled: "El restabliment de la contrasenya a través de OTCapital està desactivat. Si us plau, restableix la teva contrasenya a través del teu proveïdor d'identitat."
     edit:
       title: "Restableix la contrasenya"
     new:

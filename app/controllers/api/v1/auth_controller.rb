@@ -43,7 +43,8 @@ module Api
         # First user of an instance becomes super_admin
         family = Family.new(
           currency:    Rails.configuration.x.default_market_mode == "sa" ? "ZAR" : "USD",
-          country:     Rails.configuration.x.default_market_mode == "sa" ? "ZA"  : "US",
+          country:     Rails.configuration.x.default_market_mode == "sa" ? "ZA"    : "US",
+          locale:      Rails.configuration.x.default_market_mode == "sa" ? "en-ZA" : "en",
           market_mode: Rails.configuration.x.default_market_mode
         )
         user.family = family
@@ -206,8 +207,9 @@ module Api
           user.role = invitation.role
         else
           user.family = Family.new(
-            currency:    Rails.configuration.x.default_market_mode == "sa" ? "ZAR" : "USD",
-            country:     Rails.configuration.x.default_market_mode == "sa" ? "ZA"  : "US",
+            currency:    Rails.configuration.x.default_market_mode == "sa" ? "ZAR"   : "USD",
+            country:     Rails.configuration.x.default_market_mode == "sa" ? "ZA"    : "US",
+            locale:      Rails.configuration.x.default_market_mode == "sa" ? "en-ZA" : "en",
             market_mode: Rails.configuration.x.default_market_mode
           )
 

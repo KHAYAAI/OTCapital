@@ -11,7 +11,7 @@ class SnaptradeAccount::Processor
     account = snaptrade_account.current_account
     return unless account
 
-    Rails.logger.info "SnaptradeAccount::Processor - Processing account #{snaptrade_account.id} -> Sure account #{account.id}"
+    Rails.logger.info "SnaptradeAccount::Processor - Processing account #{snaptrade_account.id} -> OTCapital account #{account.id}"
 
     # Update account balance FIRST (before processing holdings/activities)
     # This creates the current_anchor valuation needed for reverse sync

@@ -16,7 +16,7 @@ en:
         no_api_key:
           title: "API Key"
           heading: "Access your account data programmatically"
-          description: "Get programmatic access to your Sure data with a secure API key."
+          description: "Get programmatic access to your OTCapital data with a secure API key."
           what_you_can_do: "What you can do with the API:"
           feature_1: "Access your account data programmatically"
           feature_2: "Build custom integrations and applications"

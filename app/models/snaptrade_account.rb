@@ -12,7 +12,7 @@ class SnaptradeAccount < ApplicationRecord
 
   belongs_to :snaptrade_item
 
-  # Association through account_providers for linking to Sure accounts
+  # Association through account_providers for linking to OTCapital accounts
   has_one :account_provider, as: :provider, dependent: :destroy
   has_one :linked_account, through: :account_provider, source: :account
 
@@ -22,7 +22,7 @@ class SnaptradeAccount < ApplicationRecord
   # Enqueue cleanup job after destruction to avoid blocking transaction with API call
   after_destroy :enqueue_connection_cleanup
 
-  # Helper to get the linked Sure account
+  # Helper to get the linked OTCapital account
   def current_account
     linked_account
   end

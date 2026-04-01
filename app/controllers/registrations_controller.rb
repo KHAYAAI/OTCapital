@@ -25,8 +25,9 @@ class RegistrationsController < ApplicationController
       @user.role = :member
     else
       family = Family.new(
-        currency:    Rails.configuration.x.default_market_mode == "sa" ? "ZAR" : "USD",
-        country:     Rails.configuration.x.default_market_mode == "sa" ? "ZA"  : "US",
+        currency:    Rails.configuration.x.default_market_mode == "sa" ? "ZAR"   : "USD",
+        country:     Rails.configuration.x.default_market_mode == "sa" ? "ZA"    : "US",
+        locale:      Rails.configuration.x.default_market_mode == "sa" ? "en-ZA" : "en",
         market_mode: Rails.configuration.x.default_market_mode
       )
       @user.family = family

@@ -319,7 +319,8 @@ class Import < ApplicationRecord
     end
 
     def set_default_number_format
-      self.number_format ||= "1,234.56" # Default to US/UK format
+      # SA market uses R 1 234,56 format (space delimiter, comma separator)
+      self.number_format ||= family&.sa_market? ? "1 234,56" : "1,234.56"
     end
 
     def custom_column_import_requires_identifier

@@ -1,7 +1,7 @@
 class SnaptradeAccount::ActivitiesProcessor
   include SnaptradeAccount::DataHelpers
 
-  # Map SnapTrade activity types to Sure activity labels
+  # Map SnapTrade activity types to OTCapital activity labels
   # SnapTrade types: https://docs.snaptrade.com/reference/get_activities
   SNAPTRADE_TYPE_TO_LABEL = {
     "BUY" => "Buy",

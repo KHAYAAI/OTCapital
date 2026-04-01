@@ -172,7 +172,7 @@ class SnaptradeItemsController < ApplicationController
     @no_accounts_found = no_accounts && !@syncing && @snaptrade_item.last_synced_at.present?
   end
 
-  # Link selected accounts to Sure
+  # Link selected accounts to OTCapital
   def complete_account_setup
     Rails.logger.info "SnapTrade complete_account_setup - params: #{params.to_unsafe_h.inspect}"
     account_ids = params[:account_ids] || []
@@ -471,7 +471,7 @@ class SnaptradeItemsController < ApplicationController
       # Determine account type based on SnapTrade account type
       accountable_type = infer_accountable_type(snaptrade_account.account_type)
 
-      # Create the Sure account
+      # Create the OTCapital account
       account = Current.family.accounts.create!(
         name: snaptrade_account.name,
         balance: snaptrade_account.current_balance || 0,

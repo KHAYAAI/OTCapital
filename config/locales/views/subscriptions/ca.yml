@@ -3,11 +3,11 @@ ca:
   subscriptions:
     self_hosted_alert: "%{product_name} no està disponible en mode autoallotjat."
     upgrade:
-      contribute_and_support_sure: "Contribuir i donar suport a Sure"
+      contribute_and_support_otcapital: "Contribuir i donar suport a OTCapital"
       cta: "Continua donant suport al desenvolupament d'aquest codi!"
       header:
         support: "Suport"
-        sure: "Sure"
+        otcapital: "OTCapital"
         today: "avui"
       redirect_to_stripe: "En el proper pas, se us redirigirà a Stripe, que gestiona les targetes de crèdit per nosaltres."
       trialing: "Les teves dades s'eliminaran en %{days} dies"

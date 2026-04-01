@@ -63,7 +63,7 @@ class McpController < ApplicationController
       {
         protocolVersion: PROTOCOL_VERSION,
         capabilities: { tools: {} },
-        serverInfo: { name: "sure", version: "1.0" }
+        serverInfo: { name: "otcapital", version: "1.0" }
       }
     end
 

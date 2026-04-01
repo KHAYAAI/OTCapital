@@ -3,7 +3,7 @@
 class IndexaCapitalAccount::ActivitiesProcessor
   include IndexaCapitalAccount::DataHelpers
 
-  # Map provider activity types to Sure activity labels
+  # Map provider activity types to OTCapital activity labels
   # TODO: Customize for your provider's activity types
   ACTIVITY_TYPE_TO_LABEL = {
     "BUY" => "Buy",
