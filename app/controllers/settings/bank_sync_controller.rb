@@ -6,14 +6,14 @@ class Settings::BankSyncController < ApplicationController
       {
         name: "Lunch Flow",
         description: "US, Canada, UK, EU, Brazil and Asia through multiple open banking providers.",
-        path: "https://lunchflow.app/features/sure-integration",
+        path: "https://lunchflow.app/features/otcapital-integration",
         target: "_blank",
         rel: "noopener noreferrer"
       },
       {
         name: "Plaid",
         description: "US & Canada bank connections with transactions, investments, and liabilities.",
-        path: "https://github.com/we-promise/sure/blob/main/docs/hosting/plaid.md",
+        path: "https://github.com/khayaai/otcapital/blob/main/docs/hosting/plaid.md",
         target: "_blank",
         rel: "noopener noreferrer"
       },
