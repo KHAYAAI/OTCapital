@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_20_080659) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_26_100001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -516,6 +516,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_20_080659) do
     t.string "vector_store_id"
     t.string "moniker", default: "Family", null: false
     t.string "assistant_type", default: "builtin", null: false
+    t.string "market_mode", default: "sa", null: false
     t.check_constraint "month_start_day >= 1 AND month_start_day <= 28", name: "month_start_day_range"
   end
 
@@ -1293,6 +1294,37 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_20_080659) do
     t.index ["status"], name: "index_snaptrade_items_on_status"
   end
 
+  create_table "stitch_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "stitch_item_id", null: false
+    t.uuid "account_id", null: false
+    t.string "remote_id", null: false
+    t.string "bank_id"
+    t.string "bank_name"
+    t.string "account_type"
+    t.string "account_number_masked"
+    t.string "currency", default: "ZAR"
+    t.jsonb "raw_payload", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_stitch_accounts_on_account_id"
+    t.index ["remote_id"], name: "index_stitch_accounts_on_remote_id", unique: true
+    t.index ["stitch_item_id"], name: "index_stitch_accounts_on_stitch_item_id"
+  end
+
+  create_table "stitch_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "family_id", null: false
+    t.string "name", null: false
+    t.string "token_id"
+    t.string "user_interaction_id"
+    t.string "status", default: "good", null: false
+    t.boolean "scheduled_for_deletion", default: false, null: false
+    t.datetime "token_expires_at"
+    t.jsonb "raw_payload", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_id"], name: "index_stitch_items_on_family_id"
+  end
+
   create_table "sso_audit_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
     t.string "event_type", null: false
@@ -1569,6 +1601,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_20_080659) do
   add_foreign_key "simplefin_items", "families"
   add_foreign_key "snaptrade_accounts", "snaptrade_items"
   add_foreign_key "snaptrade_items", "families"
+  add_foreign_key "stitch_accounts", "accounts"
+  add_foreign_key "stitch_accounts", "stitch_items"
+  add_foreign_key "stitch_items", "families"
   add_foreign_key "sso_audit_logs", "users"
   add_foreign_key "subscriptions", "families"
   add_foreign_key "syncs", "syncs", column: "parent_id"
