@@ -1,0 +1,19 @@
+aapl_forecast:
+  security: aapl
+  ticker: AAPL
+  model_version: kronos-mini
+  horizon_days: 7
+  generated_at: <%= 1.hour.ago %>
+  predictions: >-
+    [{"date":"<%= (Date.current + 1).iso8601 %>","predicted_close":186.5,"confidence_low":184.0,"confidence_high":189.0},
+     {"date":"<%= (Date.current + 2).iso8601 %>","predicted_close":187.2,"confidence_low":184.5,"confidence_high":190.0},
+     {"date":"<%= (Date.current + 7).iso8601 %>","predicted_close":188.0,"confidence_low":185.0,"confidence_high":191.0}]
+
+msft_forecast:
+  security: msft
+  ticker: MSFT
+  model_version: kronos-mini
+  horizon_days: 7
+  generated_at: <%= 3.days.ago %>
+  predictions: >-
+    [{"date":"<%= (Date.current + 1).iso8601 %>","predicted_close":400.0,"confidence_low":395.0,"confidence_high":405.0}]

@@ -307,6 +307,54 @@ class Provider::YahooFinance < Provider
     end
   end
 
+  # Returns an array of OHLCVCandle for the given symbol and date range.
+  # Used by the Kronos forecasting integration to build candlestick input.
+  # The Yahoo Finance v8 chart API already returns open/high/low/close/volume
+  # in the same response — we just extract all five fields instead of only close.
+  def fetch_ohlcv(symbol:, exchange_operating_mic: nil, start_date:, end_date:)
+    with_provider_response do
+      validate_date_params!(start_date, end_date)
+      period1 = start_date.to_time.utc.to_i
+      period2 = end_date.end_of_day.to_time.utc.to_i
+
+      throttle_request
+      data = fetch_authenticated_chart(symbol, {
+        "period1" => period1,
+        "period2" => period2,
+        "interval" => "1d"
+      })
+
+      chart_data = data.dig("chart", "result", 0)
+      raise Error, "No OHLCV data found for #{symbol}" unless chart_data
+
+      timestamps = chart_data.dig("timestamp") || []
+      quotes = chart_data.dig("indicators", "quote", 0) || {}
+      opens   = quotes["open"]   || []
+      highs   = quotes["high"]   || []
+      lows    = quotes["low"]    || []
+      closes  = quotes["close"]  || []
+      volumes = quotes["volume"] || []
+
+      candles = []
+      timestamps.each_with_index do |timestamp, i|
+        next if closes[i].nil? || opens[i].nil? || highs[i].nil? || lows[i].nil?
+
+        candles << OHLCVCandle.new(
+          date:   Time.at(timestamp).utc.to_date,
+          open:   opens[i].to_f.round(4),
+          high:   highs[i].to_f.round(4),
+          low:    lows[i].to_f.round(4),
+          close:  closes[i].to_f.round(4),
+          volume: (volumes[i] || 0).to_i
+        )
+      end
+
+      candles.sort_by(&:date)
+    rescue JSON::ParserError => e
+      raise Error, "Invalid OHLCV response format: #{e.message}"
+    end
+  end
+
   private
 
     def base_url

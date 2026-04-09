@@ -1,0 +1,12 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+numpy==1.26.4
+pandas==2.2.3
+torch==2.5.1
+transformers==4.47.1
+huggingface_hub==0.27.0
+# Kronos model package — install from GitHub
+# The Kronos repo does not publish to PyPI; install via:
+#   pip install git+https://github.com/shiyu-coder/Kronos.git
+# This is handled in the Dockerfile below.

@@ -3,6 +3,16 @@ class HoldingsController < ApplicationController
 
   def index
     @account = Current.family.accounts.find(params[:account_id])
+
+    # Load Kronos forecasts for all securities in this account (keyed by security_id).
+    # Returns empty hash when Kronos is disabled so the view degrades gracefully.
+    if ENV["KRONOS_ENABLED"].to_s.downcase == "true"
+      security_ids = @account.current_holdings.map(&:security_id).uniq
+      @kronos_forecasts = SecurityForecast.where(security_id: security_ids, model_version: "kronos-mini")
+                                          .index_by(&:security_id)
+    else
+      @kronos_forecasts = {}
+    end
   end
 
   def show

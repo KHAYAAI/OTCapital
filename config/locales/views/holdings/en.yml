@@ -35,6 +35,8 @@ en:
       save: Save
       overwrite_confirm_title: Overwrite cost basis?
       overwrite_confirm_body: "This will replace the current cost basis of %{current}."
+    kronos_forecast:
+      tooltip: "Kronos AI: predicted %{days}-day price change"
     holding:
       per_share: per share
       shares: "%{qty} shares"

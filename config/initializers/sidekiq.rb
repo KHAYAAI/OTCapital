@@ -66,6 +66,13 @@ Sidekiq.configure_server do |config|
   rescue => e
     Rails.logger.error("[AutoSyncScheduler] Failed to initialize: #{e.message}")
   end
+
+  # Initialize Kronos daily forecast scheduler (only runs when KRONOS_ENABLED=true)
+  config.on(:startup) do
+    KronosForecastScheduler.sync!
+  rescue => e
+    Rails.logger.error("[KronosScheduler] Failed to initialize: #{e.message}")
+  end
 end
 
 Sidekiq.configure_client do |config|

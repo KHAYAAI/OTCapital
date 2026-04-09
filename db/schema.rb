@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_26_100001) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_09_080000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -1159,6 +1159,19 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_26_100001) do
     t.index ["exchange_operating_mic"], name: "index_securities_on_exchange_operating_mic"
   end
 
+  create_table "security_forecasts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "security_id", null: false
+    t.string "ticker", null: false
+    t.string "model_version", null: false
+    t.integer "horizon_days", default: 7, null: false
+    t.datetime "generated_at", null: false
+    t.jsonb "predictions", default: [], null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["security_id", "model_version", "horizon_days"], name: "idx_security_forecasts_unique", unique: true
+    t.index ["ticker"], name: "index_security_forecasts_on_ticker"
+  end
+
   create_table "security_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.date "date", null: false
     t.decimal "price", precision: 19, scale: 4, null: false
@@ -1594,6 +1607,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_26_100001) do
   add_foreign_key "rule_conditions", "rules"
   add_foreign_key "rule_runs", "rules"
   add_foreign_key "rules", "families"
+  add_foreign_key "security_forecasts", "securities"
   add_foreign_key "security_prices", "securities"
   add_foreign_key "sessions", "impersonation_sessions", column: "active_impersonator_session_id"
   add_foreign_key "sessions", "users"

@@ -367,4 +367,97 @@ class Provider::YahooFinanceTest < ActiveSupport::TestCase
     assert_equal "EUR", currency
     assert_equal 75.75, price
   end
+
+  # ================================
+  #        fetch_ohlcv Tests
+  # ================================
+
+  test "fetch_ohlcv returns OHLCVCandle array with all five fields" do
+    chart_body = {
+      "chart" => {
+        "result" => [
+          {
+            "meta"       => { "currency" => "USD", "symbol" => "AAPL" },
+            "timestamp"  => [ 1_700_000_000, 1_700_086_400 ],
+            "indicators" => {
+              "quote" => [
+                {
+                  "open"   => [ 180.0, 181.5 ],
+                  "high"   => [ 185.0, 186.0 ],
+                  "low"    => [ 179.0, 180.5 ],
+                  "close"  => [ 183.0, 184.0 ],
+                  "volume" => [ 52_000_000, 48_000_000 ]
+                }
+              ]
+            }
+          }
+        ],
+        "error" => nil
+      }
+    }.to_json
+
+    mock_response = mock
+    mock_response.stubs(:body).returns(chart_body)
+
+    @provider.stubs(:fetch_cookie_and_crumb).returns([ "cookie", "crumb" ])
+    @provider.stubs(:authenticated_client).returns(mock_client = mock)
+    mock_client.stubs(:get).yields(mock_req = mock).returns(mock_response)
+    mock_req.stubs(:params).returns({})
+
+    result = @provider.fetch_ohlcv(
+      symbol:     "AAPL",
+      start_date: 5.days.ago.to_date,
+      end_date:   Date.current
+    )
+
+    assert result.success?
+    candles = result.data
+    assert_equal 2, candles.size
+
+    candle = candles.first
+    assert_instance_of Provider::SecurityConcept::OHLCVCandle, candle
+    assert_in_delta 180.0, candle.open,  0.001
+    assert_in_delta 185.0, candle.high,  0.001
+    assert_in_delta 179.0, candle.low,   0.001
+    assert_in_delta 183.0, candle.close, 0.001
+    assert_equal 52_000_000, candle.volume
+  end
+
+  test "fetch_ohlcv skips candles with nil close" do
+    chart_body = {
+      "chart" => {
+        "result" => [
+          {
+            "meta"       => { "currency" => "USD" },
+            "timestamp"  => [ 1_700_000_000, 1_700_086_400 ],
+            "indicators" => {
+              "quote" => [
+                {
+                  "open"   => [ 180.0, nil ],
+                  "high"   => [ 185.0, nil ],
+                  "low"    => [ 179.0, nil ],
+                  "close"  => [ 183.0, nil ],
+                  "volume" => [ 52_000_000, nil ]
+                }
+              ]
+            }
+          }
+        ],
+        "error" => nil
+      }
+    }.to_json
+
+    mock_response = mock
+    mock_response.stubs(:body).returns(chart_body)
+
+    @provider.stubs(:fetch_cookie_and_crumb).returns([ "cookie", "crumb" ])
+    @provider.stubs(:authenticated_client).returns(mock_client = mock)
+    mock_client.stubs(:get).yields(mock_req = mock).returns(mock_response)
+    mock_req.stubs(:params).returns({})
+
+    result = @provider.fetch_ohlcv(symbol: "AAPL", start_date: 5.days.ago.to_date, end_date: Date.current)
+
+    assert result.success?
+    assert_equal 1, result.data.size
+  end
 end

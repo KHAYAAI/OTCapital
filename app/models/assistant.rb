@@ -21,7 +21,7 @@ module Assistant
     end
 
     def function_classes
-      [
+      functions = [
         Function::GetTransactions,
         Function::GetAccounts,
         Function::GetHoldings,
@@ -30,6 +30,11 @@ module Assistant
         Function::ImportBankStatement,
         Function::SearchFamilyFiles
       ]
+
+      # Kronos AI forecasting — only available when the microservice is enabled
+      functions << Function::ForecastSecurity if ENV["KRONOS_ENABLED"].to_s.downcase == "true"
+
+      functions
     end
 
     private

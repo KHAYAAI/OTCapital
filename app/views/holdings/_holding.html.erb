@@ -1,4 +1,6 @@
-<%# locals: (holding:) %>
+<%# locals: (holding:, kronos_forecasts: {}) %>
+
+<% kronos_forecast = kronos_forecasts[holding.security_id] %>
 
 <%= turbo_frame_tag dom_id(holding) do %>
   <div class="grid grid-cols-12 items-center text-primary text-sm font-medium p-4">
@@ -14,7 +16,20 @@
         <%= link_to holding.name, holding_path(holding), data: { turbo_frame: :drawer }, class: "hover:underline" %>
 
         <% if holding.amount %>
-          <%= tag.p holding.ticker, class: "text-secondary text-xs uppercase" %>
+          <div class="flex items-center gap-2">
+            <%= tag.p holding.ticker, class: "text-secondary text-xs uppercase" %>
+            <% if kronos_forecast&.fresh? %>
+              <% direction = kronos_forecast.predicted_direction %>
+              <% pct = kronos_forecast.predicted_change_pct %>
+              <% badge_color = direction == :bullish ? "text-green-600 bg-green-50 theme-dark:bg-green-900/30" : direction == :bearish ? "text-red-600 bg-red-50 theme-dark:bg-red-900/30" : "text-secondary bg-container-inset" %>
+              <% badge_icon = direction == :bullish ? "trending-up" : direction == :bearish ? "trending-down" : "minus" %>
+              <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-medium <%= badge_color %>"
+                    title="<%= t('holdings.kronos_forecast.tooltip', days: kronos_forecast.horizon_days) %>">
+                <%= icon(badge_icon, size: 10, color: "current") %>
+                <%= pct >= 0 ? "+#{pct}" : pct %>%
+              </span>
+            <% end %>
+          </div>
         <% else %>
           <%= render "missing_price_tooltip" %>
         <% end %>

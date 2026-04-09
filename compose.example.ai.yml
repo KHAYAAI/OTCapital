@@ -1,12 +1,12 @@
 # ===========================================================================
-# Example Docker Compose file with Ollama (local LLM) and Pipelock (agent
-# security proxy)
+# Example Docker Compose file with Ollama (local LLM), Kronos (AI price
+# forecasting), and Pipelock (agent security proxy)
 # ===========================================================================
 #
 # Purpose:
 # --------
 #
-# This file extends the standard OTCapital setup with two optional capabilities:
+# This file extends the standard OTCapital setup with optional capabilities:
 #
 #   Pipelock — agent security proxy (always runs)
 #     - Forward proxy (port 8888): scans outbound HTTPS from Faraday-based
@@ -20,6 +20,13 @@
 #       on web port 3000 (auth token required); Pipelock adds scanning
 #       but Docker Compose cannot enforce network-level routing.
 #
+#   Kronos — AI price forecasting microservice (optional, --profile ai)
+#     - Runs the Kronos foundation model (AAAI 2026) for 7-day OHLCV forecasts
+#     - Mini model (4.1M params) runs on CPU with ~800MB RAM
+#     - Large model (499M params) requires GPU — see Dockerfile comments
+#     - Enable with: KRONOS_ENABLED=true in your .env
+#     - Model weights downloaded from HuggingFace on first start (~500MB)
+#
 #   Ollama + Open WebUI — local LLM inference (optional, --profile ai)
 #     - Only starts when you run: docker compose --profile ai up
 #
@@ -29,14 +36,14 @@
 # 1. Copy pipelock.example.yaml alongside this file (or customize it).
 # 2. Read the full setup guide:
 #
-# https://github.com/we-promise/sure/blob/main/docs/hosting/docker.md
+# https://github.com/khayaai/otcapital/blob/main/docs/hosting/docker.md
 #
 # Troubleshooting:
 # ----------------
 #
-# If you run into problems, you should open a Discussion here:
+# If you run into problems, open a Discussion here:
 #
-# https://github.com/we-promise/sure/discussions/categories/general
+# https://github.com/khayaai/otcapital/discussions/categories/general
 #
 
 x-db-env: &db_env
@@ -63,7 +70,12 @@ x-rails-env: &rails_env
   HTTPS_PROXY: "http://pipelock:8888"
   HTTP_PROXY: "http://pipelock:8888"
   # Skip proxy for internal Docker network services (including ollama for local LLM calls)
-  NO_PROXY: "db,redis,pipelock,ollama,localhost,127.0.0.1"
+  NO_PROXY: "db,redis,pipelock,ollama,kronos,localhost,127.0.0.1"
+  # Kronos AI price forecasting — enable by setting KRONOS_ENABLED=true
+  # Requires the kronos service below (--profile ai)
+  KRONOS_ENABLED: ${KRONOS_ENABLED:-false}
+  KRONOS_SERVICE_URL: http://kronos:5000
+  KRONOS_MODEL: ${KRONOS_MODEL:-mini}
   AI_DEBUG_MODE: "true" # Useful for debugging, set to "false" in production
   # Ollama using OpenAI API compatible endpoints
   OPENAI_ACCESS_TOKEN: token-can-be-any-value-for-ollama
@@ -169,8 +181,51 @@ services:
     networks:
       - sure_net
 
+  # ---------------------------------------------------------------------------
+  # Kronos AI Price Forecasting Service
+  # ---------------------------------------------------------------------------
+  # Built from ./services/kronos — a Python FastAPI app wrapping the Kronos
+  # foundation model (https://github.com/shiyu-coder/Kronos).
+  #
+  # First startup downloads ~500MB of model weights from HuggingFace.
+  # Subsequent starts load from the kronos_models volume (fast).
+  #
+  # GPU support: edit services/kronos/Dockerfile — swap the base image to
+  # pytorch/pytorch:2.5.1-cuda12.1-cudnn9-runtime and add the GPU deploy block.
+  # ---------------------------------------------------------------------------
+  kronos:
+    profiles:
+      - ai
+    build:
+      context: ./services/kronos
+      dockerfile: Dockerfile
+    container_name: kronos
+    hostname: kronos
+    restart: unless-stopped
+    environment:
+      - KRONOS_MODEL=${KRONOS_MODEL:-mini}
+      - HF_HOME=/models
+    volumes:
+      - kronos_models:/models   # HuggingFace model weight cache
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 30s
+      timeout: 15s
+      start_period: 180s   # Allow time for first-run model download
+      retries: 3
+    networks:
+      - sure_net
+    # Uncomment for GPU-enabled servers:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [ gpu ]
+
   web:
-    image: ghcr.io/we-promise/sure:stable
+    image: ghcr.io/khayaai/otcapital:stable
     volumes:
       - app-storage:/rails/storage
     ports:
@@ -196,7 +251,7 @@ services:
       - sure_net
 
   worker:
-    image: ghcr.io/we-promise/sure:stable
+    image: ghcr.io/khayaai/otcapital:stable
     command: bundle exec sidekiq
     volumes:
       - app-storage:/rails/storage
@@ -271,6 +326,7 @@ volumes:
   redis-data:
   ollama:
   ollama-webui:
+  kronos_models:   # Persists downloaded Kronos model weights across restarts
 
 networks:
   sure_net:
